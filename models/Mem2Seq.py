@@ -243,7 +243,7 @@ class Mem2Seq(nn.Module):
         return decoded_words #, acc_ptr, acc_vac
 
 
-    def evaluate(self,dev,avg_best,BLEU=False):
+    def evaluate(self,dev,avg_best,task_id,BLEU=False):
         logging.info("STARTING EVALUATION")
         acc_avg = 0.0
         wer_avg = 0.0
@@ -270,10 +270,11 @@ class Mem2Seq(nn.Module):
                             global_entity_list += [item[k].lower().replace(' ', '_') for k in item.keys()]
                 global_entity_list = list(set(global_entity_list))
         else:
-            if int(args["task"])!=6:
-                global_entity_list = entityList('data/dialog-bAbI-tasks/dialog-babi-kb-all.txt',int(args["task"]))
+            print('task_id={}'.format(task_id))
+            if task_id!=6:
+                global_entity_list = entityList('data/dialog-bAbI-tasks/dialog-babi-kb-all.txt',task_id)
             else:
-                global_entity_list = entityList('data/dialog-bAbI-tasks/dialog-babi-task6-dstc2-kb.txt',int(args["task"]))
+                global_entity_list = entityList('data/dialog-bAbI-tasks/dialog-babi-task6-dstc2-kb.txt',task_id)
 
         pbar = tqdm(enumerate(dev),total=len(dev))
         for j, data_dev in pbar: 

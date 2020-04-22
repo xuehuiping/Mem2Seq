@@ -1,3 +1,7 @@
 save/
 *.pyc
 sftp-config.json
+env/
+.DS_Store
+.idea/
+.ipynb_checkpoints/

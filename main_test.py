@@ -34,8 +34,11 @@ else:
 # Configure models
 directory = args['path'].split("/")
 task = directory[2].split('HDD')[0]
+print("task={}".format(task))
 HDD = directory[2].split('HDD')[1].split('BSZ')[0]
+print("HDD={}".format(HDD))
 L = directory[2].split('L')[1].split('lr')[0]
+print("L={}".format(L))
 
 train, dev, test, testOOV, lang, max_len, max_r = prepare_data_seq(task, batch_size=int(args['batch']))
 
@@ -46,7 +49,8 @@ else:
     model = globals()[args['decoder']](
         int(HDD),max_len,max_r,lang,args['path'],task, lr=0.0, n_layers=int(L), dropout=0.0)
 
-acc_test = model.evaluate(test, 1e6, BLEU) 
+
+acc_test = model.evaluate(test, 1e6, task, BLEU)
 print(acc_test)
 if testOOV!=[]:
     acc_oov_test = model.evaluate(testOOV,1e6,BLEU) 
