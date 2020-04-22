@@ -1,6 +1,9 @@
 
 date: 2020/4/19 3:06 下午 
+
+
 https://github.com/HLTCHKUST/Mem2Seq
+
 Mem2Seq: Effectively Incorporating Knowledge Bases into End-to-End Task-Oriented Dialog Systems (ACL 2018).
 
 Mem2Seq有效结合KB与端到端任务型对话系统
@@ -59,10 +62,15 @@ str(self.name)+str(acc_avg)
 
 
 ## 分析一下数据集
+
 上面实验用的是babi数据集。
+
 该数据集包含6个任务，测试端到端的系统，在餐馆领域。
+
 babi是Bordes & Weston的论文《学习端到端面向目标的对话框》(http://arxiv.org/abs/1605.07683)中描述的数据集。
+
 每个任务测试对话的一个独特方面。
+
 任务的设计是为了补充已经发布的20个bAbI任务的故事理解，Weston等人的论文《Towards AI Complete Question Answering: A Set of Prerequisite Toy Tasks》(http://arxiv.org/abs/1502.05698)
 
 每个任务中，都有1000个对话用于训练，1000个用于验证，1000个用于测试。
@@ -78,10 +86,12 @@ task6的数据集有些特殊，因为它来自于DSTC2。我们对其进行了�
 关于数据集的更多细节和baselilnes，参考《Learning End-to-End Goal-Oriented Dialog》，by Antoine Bordes and Jason Weston (http://arxiv.org/abs/1605.07683). 
 
 ## 分析实验结果
+
+使用数据集1训练和测试：
 ```
-!python3 main_test.py -dec=Mem2Seq \
--path=save/mem2seq-BABI/1HDD128BSZ8DR0.2L1lr0.001Mem2Seq1.0 -bsz=8 -ds=babi -t=1
-```
+python3 main_test.py -dec=Mem2Seq \
+-path=save/mem2seq-BABI/1HDD128BSZ8DR0.2L1lr0.001Mem2Seq1.0 -bsz=8 -ds=babi -t=1 > log.4.19.txt
+
 
 模型文件mem2seq-BABI/1HDD128BSZ8DR0.2L1lr0.001Mem2Seq1.0
 实验结果最好的是：
@@ -89,29 +99,58 @@ task6的数据集有些特殊，因为它来自于DSTC2。我们对其进行了�
 测试集：Dialog Accuracy:	0.439；BLEU SCORE:94.31
 
 acc_test = 0.894
+```
 
----
+下面这张图是训练过程：
+
+![](log_Mem2Seq_babi_1/2020-04-20-12-11-47.png)
+
+倒数第二列打错了，应该是acc_train
+
+
+使用数据集6训练和测试：
+
+
+
+（1） 训练结果
+
+`nohup python3 main_train.py -lr=0.001 -layer=1 \
+-hdd=128 -dr=0.2 -dec=Mem2Seq -bsz=8 -ds=babi -t=6 > log.4.21.txt &`
+```
+04-22 00:02 Dialog Accuracy:	0.0
+04-22 00:02 F1 SCORE:	0.6863799447319833
+04-22 00:02 BLEU SCORE:     69.85
+
+{'dataset': 'babi', 'task': '6', 'decoder': 'Mem2Seq', 'hidden': '128', 'batch': '8', 'learn': '0.001', 'drop': '0.2', 'unk_mask': 1, 'layer': '1', 'limit': -10000, 'path': None, 'test': None, 'sample': None, 'useKB': 1, 'entPtr': 0, 'evalp': 2, 'addName': ''}
+```
+
+（2）测试结果
+
+`
 python3 main_test.py -dec=Mem2Seq \
--path=save/mem2seq-BABI/6HDD128BSZ8DR0.2L1lr0.001Mem2Seq0.5316620879120879 -bsz=8 -ds=babi -t=6 > log.4.22.txt
+-path=save/mem2seq-BABI/6HDD128BSZ8DR0.2L1lr0.001Mem2Seq0.5316620879120879 -bsz=8 -ds=babi -t=6 > log.4.22.txt`
 
-04-22 08:30 Dialog Accuracy:	0.0008952551477170994
-04-22 08:30 F1 SCORE:	0.7040530544521351
-04-22 08:30 BLEU SCORE:53.81
+```
+04-22 08:39 Dialog Accuracy:	0.0008952551477170994
+04-22 08:39 F1 SCORE:	0.7040530544521351
+04-22 08:39 BLEU SCORE:     53.81
+
+{'dataset': 'babi', 'task': '6', 'decoder': 'Mem2Seq', 'hidden': None, 'batch': '8', 'learn': None, 'drop': None, 'unk_mask': 1, 'layer': None, 'limit': -10000, 'path': 'save/mem2seq-BABI/6HDD128BSZ8DR0.2L1lr0.001Mem2Seq0.5316620879120879', 'test': None, 'sample': None, 'useKB': 1, 'entPtr': 0, 'evalp': 2, 'addName': ''}
+
 acc_test = 0.4103024911032029
+```
 
-[](log_Mem2Seq_babi_1/2020-04-20-12-11-47.png)
+DSTC2的结果还可以，原文是“Mem2Seq在DSTC2拥有最高75.3％的Entity F1得分和55.3 BLEU得分”
+
 
 ## 原始论文
 /Users/huihui/KPI-研读论文/1605.07683.任务型.端到端对话.pdf
 
 数据集http://fb.ai/babi，即https://research.fb.com/downloads/babi/
+
 https://github.com/facebookarchive/bAbI-tasks
 
-
-
-
-[](log_Mem2Seq_babi_1/2020-04-20-12-11-47.png)
-
+# 参考
 
 https://zhuanlan.zhihu.com/p/44110616
 
