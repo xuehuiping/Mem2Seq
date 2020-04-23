@@ -6,6 +6,8 @@ https://github.com/HLTCHKUST/Mem2Seq
 
 Mem2Seq: Effectively Incorporating Knowledge Bases into End-to-End Task-Oriented Dialog Systems (ACL 2018).
 
+# 论文
+
 Mem2Seq有效结合KB与端到端任务型对话系统
 
 针对RNN存在长时间遗忘的问题，基于MemNN,本文提出了Mem2Seq模型
@@ -21,7 +23,11 @@ Mem2Seq有效结合KB与端到端任务型对话系统
 
 3）Mem2Seq可以更快地进行训练，并在几个任务型对话数据集中实现最先进的结果。
 
+原文的创新点：
+- Mem2Seq是第一个使用带有指针网络思想的多跳注意力机制的模型，这种方法有效的结合了KB的信息。
+- Mem2Seq学习如何生成动态的查询来控制memory的访问。
 
+# 代码
 
 本仓库实现：
 - Mem2Seq: Memory to Sequence (Our model)
